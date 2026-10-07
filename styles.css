@@ -81,6 +81,8 @@ html, body {
   box-shadow: 0 12px 30px rgba(43, 138, 158, 0.35);
   margin-bottom: 18px;
   animation: float 3s ease-in-out infinite;
+  cursor: pointer;
+  user-select: none;
 }
 @keyframes float {
   0%, 100% { transform: translateY(0); }
@@ -286,6 +288,57 @@ html, body {
   color: var(--muted);
   margin-top: 40px;
   font-size: 15px;
+}
+
+/* ANSWER KEY */
+.answer-key-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 20px;
+}
+.answer-card {
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.04);
+}
+.answer-card .q-num {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 6px;
+  letter-spacing: 0.04em;
+}
+.answer-card .sentence {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+/* PASSWORD */
+.password-input {
+  width: 100%;
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px;
+  font-size: 16px;
+  font-family: inherit;
+  text-align: center;
+  outline: none;
+  background: #f4fafc;
+}
+.password-input:focus {
+  border-color: var(--primary);
+}
+.password-error {
+  color: var(--bad);
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 10px;
 }
 
 /* GAME HEADER */
