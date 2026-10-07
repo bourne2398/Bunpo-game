@@ -1,79 +1,43 @@
-/* ===== QUESTIONS DATA ===== */
+/* ===== QUESTIONS DATA (easy → hard) ===== */
 const QUESTIONS = [
   {
     id: 1,
-    template: ["_", "_", "_", "_"],
+    template: ["_", "_", "_", "_", "です。"],
     options: [
-      { text: "昨日", furi: "きのう" },
-      { text: "どこで", furi: "" },
-      { text: "友だちに", furi: "とも" },
-      { text: "会いましたか", furi: "あ" }
+      { text: "わたし", furi: "" },
+      { text: "は", furi: "" },
+      { text: "リー", furi: "" },
+      { text: "はじめまして", furi: "" }
     ],
-    answer: ["昨日", "どこで", "友だちに", "会いましたか"],
+    answer: ["はじめまして", "わたし", "は", "リー"],
     points: 10
   },
   {
     id: 2,
-    template: ["いつも", "_", "_", "_", "_", "食べますか。"],
+    template: ["すみません、", "_", "_", "_", "_", "か。"],
     options: [
-      { text: "で", furi: "" },
       { text: "どこ", furi: "" },
-      { text: "ごはん", furi: "" },
-      { text: "を", furi: "" }
+      { text: "は", furi: "" },
+      { text: "トイレ", furi: "" },
+      { text: "です", furi: "" }
     ],
-    answer: ["どこ", "で", "ごはん", "を"],
+    answer: ["トイレ", "は", "どこ", "です"],
     points: 10
   },
   {
     id: 3,
-    template: ["毎朝", "_", "_", "_", "_", "行きます。"],
+    template: ["_", "_", "_", "_", "ですか。"],
     options: [
-      { text: "学校", furi: "がっこう" },
-      { text: "へ", furi: "" },
-      { text: "電車", furi: "でんしゃ" },
-      { text: "で", furi: "" }
+      { text: "は", furi: "" },
+      { text: "カメラ", furi: "" },
+      { text: "だれの", furi: "" },
+      { text: "この", furi: "" }
     ],
-    answer: ["電車", "で", "学校", "へ"],
+    answer: ["この", "カメラ", "は", "だれの"],
     points: 10
   },
   {
     id: 4,
-    template: ["わたしは", "_", "_", "_", "_", "。"],
-    options: [
-      { text: "おきます", furi: "" },
-      { text: "6時", furi: "じ" },
-      { text: "まいあさ", furi: "" },
-      { text: "に", furi: "" }
-    ],
-    answer: ["まいあさ", "6時", "に", "おきます"],
-    points: 10
-  },
-  {
-    id: 5,
-    template: ["_", "_", "と", "ベトナム", "_", "カンボジア", "_", "行きました。"],
-    options: [
-      { text: "去年", furi: "きょねん" },
-      { text: "と", furi: "" },
-      { text: "へ", furi: "" },
-      { text: "友だち", furi: "とも" }
-    ],
-    answer: ["去年", "友だち", "と", "へ"],
-    points: 12
-  },
-  {
-    id: 6,
-    template: ["_", "は", "_", "_", "_", "です。"],
-    options: [
-      { text: "土曜日", furi: "どようび" },
-      { text: "日曜日", furi: "にちようび" },
-      { text: "と", furi: "" },
-      { text: "休み", furi: "やす" }
-    ],
-    answer: ["休み", "土曜日", "と", "日曜日"],
-    points: 10
-  },
-  {
-    id: 7,
     template: ["この", "_", "_", "_", "_", "ですか。"],
     options: [
       { text: "の", furi: "" },
@@ -82,6 +46,42 @@ const QUESTIONS = [
       { text: "は", furi: "" }
     ],
     answer: ["かばん", "は", "どこ", "の"],
+    points: 10
+  },
+  {
+    id: 5,
+    template: ["_", "_", "_", "_", "じゃありません。"],
+    options: [
+      { text: "わたし", furi: "" },
+      { text: "このノート", furi: "" },
+      { text: "は", furi: "" },
+      { text: "の", furi: "" }
+    ],
+    answer: ["このノート", "は", "わたし", "の"],
+    points: 10
+  },
+  {
+    id: 6,
+    template: ["_", "_", "_", "_", "せんせいです。"],
+    options: [
+      { text: "は", furi: "" },
+      { text: "あのひと", furi: "" },
+      { text: "PWだいがく", furi: "" },
+      { text: "の", furi: "" }
+    ],
+    answer: ["あのひと", "は", "PWだいがく", "の"],
+    points: 10
+  },
+  {
+    id: 7,
+    template: ["_", "は", "_", "_", "_", "です。"],
+    options: [
+      { text: "土曜日", furi: "どようび" },
+      { text: "日曜日", furi: "にちようび" },
+      { text: "と", furi: "" },
+      { text: "休み", furi: "やす" }
+    ],
+    answer: ["休み", "土曜日", "と", "日曜日"],
     points: 10
   },
   {
@@ -98,66 +98,54 @@ const QUESTIONS = [
   },
   {
     id: 9,
-    template: ["すみません、", "_", "_", "_", "_", "か。"],
+    template: ["わたしは", "_", "_", "_", "_", "。"],
     options: [
-      { text: "どこ", furi: "" },
-      { text: "は", furi: "" },
-      { text: "トイレ", furi: "" },
-      { text: "です", furi: "" }
+      { text: "おきます", furi: "" },
+      { text: "6時", furi: "じ" },
+      { text: "まいあさ", furi: "" },
+      { text: "に", furi: "" }
     ],
-    answer: ["トイレ", "は", "どこ", "です"],
+    answer: ["まいあさ", "6時", "に", "おきます"],
     points: 10
   },
   {
     id: 10,
-    template: ["_", "_", "_", "_", "じゃありません。"],
+    template: ["いつも", "_", "_", "_", "_", "食べますか。"],
     options: [
-      { text: "わたし", furi: "" },
-      { text: "このノート", furi: "" },
-      { text: "は", furi: "" },
-      { text: "の", furi: "" }
+      { text: "で", furi: "" },
+      { text: "どこ", furi: "" },
+      { text: "ごはん", furi: "" },
+      { text: "を", furi: "" }
     ],
-    answer: ["このノート", "は", "わたし", "の"],
+    answer: ["どこ", "で", "ごはん", "を"],
     points: 10
   },
   {
     id: 11,
-    template: ["_", "_", "_", "_", "ですか。"],
+    template: ["毎朝", "_", "_", "_", "_", "行きます。"],
     options: [
-      { text: "は", furi: "" },
-      { text: "カメラ", furi: "" },
-      { text: "だれの", furi: "" },
-      { text: "この", furi: "" }
+      { text: "学校", furi: "がっこう" },
+      { text: "へ", furi: "" },
+      { text: "電車", furi: "でんしゃ" },
+      { text: "で", furi: "" }
     ],
-    answer: ["この", "カメラ", "は", "だれの"],
+    answer: ["電車", "で", "学校", "へ"],
     points: 10
   },
   {
     id: 12,
-    template: ["すみません、", "_", "の", "_", "_", "_", "ですか。"],
+    template: ["_", "_", "_", "_"],
     options: [
-      { text: "カメラ", furi: "" },
-      { text: "どこ", furi: "" },
-      { text: "は", furi: "" },
-      { text: "うりば", furi: "" }
+      { text: "昨日", furi: "きのう" },
+      { text: "どこで", furi: "" },
+      { text: "友だちに", furi: "とも" },
+      { text: "会いましたか", furi: "あ" }
     ],
-    answer: ["カメラ", "うりば", "は", "どこ"],
-    points: 12
-  },
-  {
-    id: 13,
-    template: ["_", "_", "_", "_", "せんせいです。"],
-    options: [
-      { text: "は", furi: "" },
-      { text: "あのひと", furi: "" },
-      { text: "PWだいがく", furi: "" },
-      { text: "の", furi: "" }
-    ],
-    answer: ["あのひと", "は", "PWだいがく", "の"],
+    answer: ["昨日", "どこで", "友だちに", "会いましたか"],
     points: 10
   },
   {
-    id: 14,
+    id: 13,
     template: ["すみません、これ", "_", "_", "_", "_", "ですか。"],
     options: [
       { text: "どこ", furi: "" },
@@ -169,30 +157,39 @@ const QUESTIONS = [
     points: 10
   },
   {
-    id: 15,
-    template: ["_", "_", "_", "_", "です。"],
+    id: 14,
+    template: ["すみません、", "_", "の", "_", "_", "_", "ですか。"],
     options: [
-      { text: "わたし", furi: "" },
+      { text: "カメラ", furi: "" },
+      { text: "どこ", furi: "" },
       { text: "は", furi: "" },
-      { text: "リー", furi: "" },
-      { text: "はじめまして", furi: "" }
+      { text: "うりば", furi: "" }
     ],
-    answer: ["はじめまして", "わたし", "は", "リー"],
-    points: 10
+    answer: ["カメラ", "うりば", "は", "どこ"],
+    points: 12
+  },
+  {
+    id: 15,
+    template: ["_", "_", "と", "ベトナム", "_", "カンボジア", "_", "行きました。"],
+    options: [
+      { text: "去年", furi: "きょねん" },
+      { text: "と", furi: "" },
+      { text: "へ", furi: "" },
+      { text: "友だち", furi: "とも" }
+    ],
+    answer: ["去年", "友だち", "と", "へ"],
+    points: 12
   }
 ];
 
 /* ===== STATE ===== */
-let settings = {
-  questionCount: 10,
-  totalTime: 120
-};
+const TOTAL_TIME = 120;
 
 let state = {
   lives: 3,
   score: 0,
-  timeLeft: 120,
-  totalTime: 120,
+  timeLeft: TOTAL_TIME,
+  totalTime: TOTAL_TIME,
   currentQ: 0,
   questions: [],
   answers: [],
@@ -209,7 +206,6 @@ const $$ = (sel) => document.querySelectorAll(sel);
 
 const screens = {
   home: $("#homeScreen"),
-  settings: $("#settingsScreen"),
   howto: $("#howtoScreen"),
   history: $("#historyScreen"),
   answerKey: $("#answerKeyScreen"),
@@ -222,7 +218,7 @@ function showScreen(name) {
   if (screens[name]) screens[name].classList.add("active");
 }
 
-$("#playBtn").addEventListener("click", () => showScreen("settings"));
+$("#playBtn").addEventListener("click", () => startGame());
 $("#howtoBtn").addEventListener("click", () => showScreen("howto"));
 $("#historyBtn").addEventListener("click", () => {
   renderHistory();
@@ -298,35 +294,13 @@ function renderAnswerKey() {
   }).join("");
 }
 
-/* ===== SETTINGS ===== */
-function setupOptionRow(rowId, key) {
-  const row = $(rowId);
-  if (!row) return;
-  row.querySelectorAll(".option-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      row.querySelectorAll(".option-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      settings[key] = parseInt(btn.dataset.value, 10);
-    });
-  });
-}
-
-setupOptionRow("#qCountOptions", "questionCount");
-setupOptionRow("#timeOptions", "totalTime");
-
-$("#startGameBtn").addEventListener("click", () => {
-  startGame();
-});
-
 /* ===== GAME FLOW ===== */
 function startGame() {
-  const count = Math.min(settings.questionCount, QUESTIONS.length);
-  const shuffled = [...QUESTIONS].sort(() => Math.random() - 0.5);
-  state.questions = shuffled.slice(0, count);
+  state.questions = [...QUESTIONS];
   state.lives = 3;
   state.score = 0;
-  state.totalTime = settings.totalTime;
-  state.timeLeft = settings.totalTime;
+  state.totalTime = TOTAL_TIME;
+  state.timeLeft = TOTAL_TIME;
   state.currentQ = 0;
   state.isPlaying = true;
   updateLives();
@@ -621,7 +595,7 @@ function endGame(finished) {
 
 $("#playAgainBtn").addEventListener("click", () => {
   $("#resultModal").classList.remove("show");
-  showScreen("settings");
+  startGame();
 });
 $("#homeFromResultBtn").addEventListener("click", () => {
   $("#resultModal").classList.remove("show");
