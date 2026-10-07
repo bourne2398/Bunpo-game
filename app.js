@@ -396,7 +396,7 @@ function loadQuestion() {
     } else {
       tile.textContent = opt.text;
     }
-    setupDrag(tile);
+    setupBankDrag(tile);
     bank.appendChild(tile);
   });
 
@@ -404,75 +404,167 @@ function loadQuestion() {
   renderProgress();
 }
 
-/* ===== DRAG & DROP (follows finger) ===== */
+/* ===== DRAG & DROP (bank + slot to slot) ===== */
 let dragData = null;
 
-function setupDrag(tile) {
-  tile.addEventListener("pointerdown", (e) => {
-    if (tile.classList.contains("used")) return;
-    e.preventDefault();
-    tile.setPointerCapture(e.pointerId);
+function startDrag(e, text, fromSlotIdx, tileEl) {
+  e.preventDefault();
+  if (e.currentTarget && e.currentTarget.setPointerCapture) {
+    try { e.currentTarget.setPointerCapture(e.pointerId); } catch (err) {}
+  }
 
-    dragData = {
-      tile,
-      text: tile.dataset.text
-    };
+  dragData = {
+    text,
+    fromSlotIdx, // null if from bank
+    tileEl,
+    moved: false
+  };
 
-    const clone = document.createElement("div");
-    clone.className = "drag-clone";
-    clone.innerHTML = tile.innerHTML;
-    clone.style.left = e.clientX + "px";
-    clone.style.top = e.clientY + "px";
-    document.body.appendChild(clone);
-    dragData.clone = clone;
+  const q = state.questions[state.currentQ];
+  const opt = q.options.find(o => o.text === text);
+  const clone = document.createElement("div");
+  clone.className = "drag-clone";
+  if (opt && opt.furi) {
+    clone.innerHTML = '<span class="furi">' + opt.furi + '</span>' + text;
+  } else {
+    clone.textContent = text;
+  }
+  clone.style.left = e.clientX + "px";
+  clone.style.top = e.clientY + "px";
+  document.body.appendChild(clone);
+  dragData.clone = clone;
 
-    tile.classList.add("dragging");
+  if (tileEl) tileEl.classList.add("dragging");
+  if (fromSlotIdx !== null) {
+    const src = document.querySelector('.slot[data-idx="' + fromSlotIdx + '"]');
+    if (src) src.classList.add("dragging-slot");
+  }
 
-    const onMove = (ev) => {
-      if (!dragData) return;
-      dragData.clone.style.left = ev.clientX + "px";
-      dragData.clone.style.top = ev.clientY + "px";
+  const onMove = (ev) => {
+    if (!dragData) return;
+    dragData.moved = true;
+    dragData.clone.style.left = ev.clientX + "px";
+    dragData.clone.style.top = ev.clientY + "px";
 
-      $$(".slot").forEach(s => s.classList.remove("drag-over"));
-      const el = document.elementFromPoint(ev.clientX, ev.clientY);
-      const slot = el && el.closest ? el.closest(".slot") : null;
-      if (slot && !slot.classList.contains("filled")) {
+    $$(".slot").forEach(s => s.classList.remove("drag-over"));
+    const el = document.elementFromPoint(ev.clientX, ev.clientY);
+    const slot = el && el.closest ? el.closest(".slot") : null;
+    if (slot) {
+      const targetIdx = parseInt(slot.dataset.idx);
+      // highlight if empty or different slot (swap allowed)
+      if (fromSlotIdx === null || targetIdx !== fromSlotIdx) {
         slot.classList.add("drag-over");
       }
-    };
+    }
+  };
 
-    const onUp = (ev) => {
-      if (!dragData) return;
-      try { tile.releasePointerCapture(e.pointerId); } catch(err){}
-      document.removeEventListener("pointermove", onMove);
-      document.removeEventListener("pointerup", onUp);
+  const onUp = (ev) => {
+    if (!dragData) return;
+    document.removeEventListener("pointermove", onMove);
+    document.removeEventListener("pointerup", onUp);
 
-      const el = document.elementFromPoint(ev.clientX, ev.clientY);
-      const slot = el && el.closest ? el.closest(".slot") : null;
-      if (slot && !slot.classList.contains("filled")) {
-        placeInSlot(slot, dragData.text, dragData.tile);
+    const el = document.elementFromPoint(ev.clientX, ev.clientY);
+    const slot = el && el.closest ? el.closest(".slot") : null;
+
+    if (slot) {
+      const targetIdx = parseInt(slot.dataset.idx);
+      if (fromSlotIdx !== null && targetIdx === fromSlotIdx && !dragData.moved) {
+        // tap on same slot → return to bank
+        clearSlot(fromSlotIdx);
+      } else if (fromSlotIdx !== null && targetIdx === fromSlotIdx) {
+        // dragged but released on same → keep
+      } else {
+        moveToSlot(targetIdx, text, fromSlotIdx, tileEl);
       }
+    } else if (fromSlotIdx !== null && dragData.moved) {
+      // dragged off slots → return to bank
+      clearSlot(fromSlotIdx);
+    }
 
-      if (dragData.clone) dragData.clone.remove();
-      tile.classList.remove("dragging");
-      $$(".slot").forEach(s => s.classList.remove("drag-over"));
-      dragData = null;
-    };
+    if (dragData.clone) dragData.clone.remove();
+    if (tileEl) tileEl.classList.remove("dragging");
+    $$(".slot").forEach(s => {
+      s.classList.remove("drag-over");
+      s.classList.remove("dragging-slot");
+    });
+    dragData = null;
+  };
 
-    document.addEventListener("pointermove", onMove);
-    document.addEventListener("pointerup", onUp);
+  document.addEventListener("pointermove", onMove);
+  document.addEventListener("pointerup", onUp);
+}
+
+function setupBankDrag(tile) {
+  tile.addEventListener("pointerdown", (e) => {
+    if (tile.classList.contains("used")) return;
+    startDrag(e, tile.dataset.text, null, tile);
   });
 }
 
-function placeInSlot(slot, text, tile) {
-  const idx = parseInt(slot.dataset.idx);
-  if (state.answers[idx]) {
-    returnToBank(state.answers[idx]);
-  }
-  state.answers[idx] = text;
-  state.usedOptions.add(text);
-  tile.classList.add("used");
+function setupSlotDrag(slot) {
+  slot.addEventListener("pointerdown", (e) => {
+    if (!slot.classList.contains("filled")) return;
+    const idx = parseInt(slot.dataset.idx);
+    const text = state.answers[idx];
+    if (!text) return;
+    startDrag(e, text, idx, null);
+  });
+}
 
+function clearSlot(idx) {
+  const text = state.answers[idx];
+  if (!text) return;
+  state.answers[idx] = null;
+  state.usedOptions.delete(text);
+  $$(".word-tile").forEach(t => {
+    if (t.dataset.text === text) t.classList.remove("used");
+  });
+  const slot = document.querySelector('.slot[data-idx="' + idx + '"]');
+  if (slot) {
+    slot.classList.remove("filled");
+    slot.innerHTML = "";
+  }
+  checkReady();
+}
+
+function moveToSlot(targetIdx, text, fromSlotIdx, tileEl) {
+  const targetText = state.answers[targetIdx];
+
+  // If target has a word and we came from another slot → swap
+  if (targetText && fromSlotIdx !== null) {
+    state.answers[fromSlotIdx] = targetText;
+    state.answers[targetIdx] = text;
+    fillSlotUI(fromSlotIdx, targetText);
+    fillSlotUI(targetIdx, text);
+  } else if (targetText && fromSlotIdx === null) {
+    // from bank onto filled slot → replace, return old to bank
+    returnToBank(targetText);
+    state.answers[targetIdx] = text;
+    state.usedOptions.add(text);
+    if (tileEl) tileEl.classList.add("used");
+    fillSlotUI(targetIdx, text);
+  } else {
+    // empty target
+    if (fromSlotIdx !== null) {
+      state.answers[fromSlotIdx] = null;
+      const src = document.querySelector('.slot[data-idx="' + fromSlotIdx + '"]');
+      if (src) {
+        src.classList.remove("filled");
+        src.innerHTML = "";
+      }
+    } else {
+      state.usedOptions.add(text);
+      if (tileEl) tileEl.classList.add("used");
+    }
+    state.answers[targetIdx] = text;
+    fillSlotUI(targetIdx, text);
+  }
+  checkReady();
+}
+
+function fillSlotUI(idx, text) {
+  const slot = document.querySelector('.slot[data-idx="' + idx + '"]');
+  if (!slot) return;
   const q = state.questions[state.currentQ];
   const opt = q.options.find(o => o.text === text);
   slot.classList.add("filled");
@@ -481,17 +573,10 @@ function placeInSlot(slot, text, tile) {
   } else {
     slot.textContent = text;
   }
-
-  slot.onclick = () => {
-    returnToBank(text);
-    state.answers[idx] = null;
-    slot.classList.remove("filled");
-    slot.innerHTML = "";
-    slot.onclick = null;
-    checkReady();
-  };
-
-  checkReady();
+  // ensure drag handler (clone node to avoid duplicate listeners)
+  const fresh = slot.cloneNode(true);
+  slot.parentNode.replaceChild(fresh, slot);
+  setupSlotDrag(fresh);
 }
 
 function returnToBank(text) {
@@ -633,7 +718,17 @@ function showToast(msg, type) {
   setTimeout(() => t.classList.remove("show"), 1600);
 }
 
-/* ===== PWA ===== */
+/* ===== PWA (auto-update) ===== */
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js").catch(() => {});
+  navigator.serviceWorker.register("sw.js").then(reg => {
+    reg.update();
+    setInterval(() => reg.update(), 60 * 1000);
+  }).catch(() => {});
+
+  let refreshing = false;
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (refreshing) return;
+    refreshing = true;
+    window.location.reload();
+  });
 }
