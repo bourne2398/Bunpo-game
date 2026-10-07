@@ -24,30 +24,45 @@
         <p class="subtitle">文をつくろう · Bunpo Game</p>
       </div>
       <div class="home-actions">
-        <button id="playBtn" class="btn-primary"><span class="btn-icon">▶</span> プレイ</button>
-        <button id="howtoBtn" class="btn-secondary"><span class="btn-icon">？</span> 遊び方</button>
-        <button id="historyBtn" class="btn-secondary"><span class="btn-icon">📊</span> 履歴</button>
+        <button id="playBtn" class="btn-primary"><span class="btn-icon">▶</span> Play</button>
+        <button id="howtoBtn" class="btn-secondary"><span class="btn-icon">？</span> How to Play</button>
+        <button id="historyBtn" class="btn-secondary"><span class="btn-icon">📊</span> History</button>
       </div>
     </section>
 
     <section id="howtoScreen" class="screen">
       <header class="screen-header">
         <button class="back-btn" data-back="home">←</button>
-        <h2>遊び方</h2>
+        <h2>How to Play</h2>
       </header>
       <div class="howto-content">
-        <div class="howto-card"><div class="step-num">1</div><p>下の単語を<strong>ドラッグ</strong>して空欄に入れます</p></div>
-        <div class="howto-card"><div class="step-num">2</div><p>正しい順番に並べて「チェック」を押します</p></div>
-        <div class="howto-card"><div class="step-num">3</div><p>ライフは<strong>3つ</strong>。間違えると1つ減ります</p></div>
-        <div class="howto-card"><div class="step-num">4</div><p>制限時間は<strong>2分</strong>です。急いで！</p></div>
-        <div class="howto-card"><div class="step-num">5</div><p>全問正解で<strong>花丸</strong>がもらえます ◎</p></div>
+        <div class="howto-card">
+          <div class="step-num">1</div>
+          <p>Drag the words at the bottom into the empty blanks</p>
+        </div>
+        <div class="howto-card">
+          <div class="step-num">2</div>
+          <p>Put them in the correct order, then press <strong>Check</strong></p>
+        </div>
+        <div class="howto-card">
+          <div class="step-num">3</div>
+          <p>You have <strong>3 lives</strong>. A wrong answer costs one life</p>
+        </div>
+        <div class="howto-card">
+          <div class="step-num">4</div>
+          <p>Time limit is <strong>2 minutes</strong>. Hurry!</p>
+        </div>
+        <div class="howto-card">
+          <div class="step-num">5</div>
+          <p>Get everything right for a <strong>Hana Maru</strong> (perfect score) ◎</p>
+        </div>
       </div>
     </section>
 
     <section id="historyScreen" class="screen">
       <header class="screen-header">
         <button class="back-btn" data-back="home">←</button>
-        <h2>履歴</h2>
+        <h2>History</h2>
       </header>
       <div id="historyList" class="history-list"></div>
     </section>
@@ -69,8 +84,8 @@
         <div id="wordBank" class="word-bank"></div>
       </div>
       <div class="game-actions">
-        <button id="checkBtn" class="btn-primary" disabled>チェック</button>
-        <button id="skipBtn" class="btn-ghost">スキップ</button>
+        <button id="checkBtn" class="btn-primary" disabled>Check</button>
+        <button id="skipBtn" class="btn-ghost">Skip</button>
       </div>
     </section>
 
@@ -80,14 +95,14 @@
           <div class="flower"><span></span><span></span><span></span><span></span><span></span><span></span></div>
           <div class="maru-text">花丸</div>
         </div>
-        <h2 id="resultTitle">おつかれさま！</h2>
+        <h2 id="resultTitle">Good job!</h2>
         <div class="result-stats">
-          <div><strong id="finalScore">0</strong><span>スコア</span></div>
-          <div><strong id="finalCorrect">0</strong><span>正解</span></div>
-          <div><strong id="finalTime">0:00</strong><span>残り時間</span></div>
+          <div><strong id="finalScore">0</strong><span>Score</span></div>
+          <div><strong id="finalCorrect">0</strong><span>Correct</span></div>
+          <div><strong id="finalTime">0:00</strong><span>Time left</span></div>
         </div>
-        <button id="playAgainBtn" class="btn-primary">もう一度</button>
-        <button id="homeFromResultBtn" class="btn-secondary">ホームへ</button>
+        <button id="playAgainBtn" class="btn-primary">Play Again</button>
+        <button id="homeFromResultBtn" class="btn-secondary">Home</button>
       </div>
     </div>
 
