@@ -183,11 +183,16 @@ const QUESTIONS = [
 ];
 
 /* ===== STATE ===== */
-const TOTAL_TIME = 120;
+let settings = {
+  questionCount: 10,
+  totalTime: 120
+};
+
 let state = {
   lives: 3,
   score: 0,
-  timeLeft: TOTAL_TIME,
+  timeLeft: 120,
+  totalTime: 120,
   currentQ: 0,
   questions: [],
   answers: [],
@@ -202,6 +207,7 @@ const $$ = (sel) => document.querySelectorAll(sel);
 
 const screens = {
   home: $("#homeScreen"),
+  settings: $("#settingsScreen"),
   howto: $("#howtoScreen"),
   history: $("#historyScreen"),
   game: $("#gameScreen")
@@ -209,11 +215,11 @@ const screens = {
 
 /* ===== NAVIGATION ===== */
 function showScreen(name) {
-  Object.values(screens).forEach(s => s.classList.remove("active"));
-  screens[name].classList.add("active");
+  Object.values(screens).forEach(s => s && s.classList.remove("active"));
+  if (screens[name]) screens[name].classList.add("active");
 }
 
-$("#playBtn").addEventListener("click", startGame);
+$("#playBtn").addEventListener("click", () => showScreen("settings"));
 $("#howtoBtn").addEventListener("click", () => showScreen("howto"));
 $("#historyBtn").addEventListener("click", () => {
   renderHistory();
@@ -223,12 +229,35 @@ $$(".back-btn").forEach(btn => {
   btn.addEventListener("click", () => showScreen(btn.dataset.back));
 });
 
+/* ===== SETTINGS ===== */
+function setupOptionRow(rowId, key) {
+  const row = $(rowId);
+  if (!row) return;
+  row.querySelectorAll(".option-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      row.querySelectorAll(".option-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      settings[key] = parseInt(btn.dataset.value, 10);
+    });
+  });
+}
+
+setupOptionRow("#qCountOptions", "questionCount");
+setupOptionRow("#timeOptions", "totalTime");
+
+$("#startGameBtn").addEventListener("click", () => {
+  startGame();
+});
+
 /* ===== GAME FLOW ===== */
 function startGame() {
-  state.questions = [...QUESTIONS].sort(() => Math.random() - 0.5);
+  const count = Math.min(settings.questionCount, QUESTIONS.length);
+  const shuffled = [...QUESTIONS].sort(() => Math.random() - 0.5);
+  state.questions = shuffled.slice(0, count);
   state.lives = 3;
   state.score = 0;
-  state.timeLeft = TOTAL_TIME;
+  state.totalTime = settings.totalTime;
+  state.timeLeft = settings.totalTime;
   state.currentQ = 0;
   state.isPlaying = true;
   updateLives();
@@ -255,7 +284,7 @@ function updateTimerUI() {
   const m = Math.floor(state.timeLeft / 60);
   const s = state.timeLeft % 60;
   $("#timerText").textContent = m + ":" + s.toString().padStart(2, "0");
-  const pct = (state.timeLeft / TOTAL_TIME) * 100;
+  const pct = (state.timeLeft / state.totalTime) * 100;
   const fill = $("#timerFill");
   fill.style.width = pct + "%";
   fill.classList.remove("warning", "danger");
@@ -523,7 +552,7 @@ function endGame(finished) {
 
 $("#playAgainBtn").addEventListener("click", () => {
   $("#resultModal").classList.remove("show");
-  startGame();
+  showScreen("settings");
 });
 $("#homeFromResultBtn").addEventListener("click", () => {
   $("#resultModal").classList.remove("show");
