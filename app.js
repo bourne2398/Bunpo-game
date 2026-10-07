@@ -201,6 +201,8 @@ let state = {
   isPlaying: false
 };
 
+const OWNER_PASSWORD = "mrllrja1";
+
 /* ===== DOM ===== */
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
@@ -210,6 +212,7 @@ const screens = {
   settings: $("#settingsScreen"),
   howto: $("#howtoScreen"),
   history: $("#historyScreen"),
+  answerKey: $("#answerKeyScreen"),
   game: $("#gameScreen")
 };
 
@@ -228,6 +231,72 @@ $("#historyBtn").addEventListener("click", () => {
 $$(".back-btn").forEach(btn => {
   btn.addEventListener("click", () => showScreen(btn.dataset.back));
 });
+
+/* ===== SECRET ANSWER KEY (tap logo 5 times) ===== */
+let logoTaps = 0;
+let logoTapTimer = null;
+
+const logo = $("#secretLogo");
+if (logo) {
+  logo.addEventListener("click", () => {
+    logoTaps++;
+    clearTimeout(logoTapTimer);
+    logoTapTimer = setTimeout(() => { logoTaps = 0; }, 1500);
+    if (logoTaps >= 5) {
+      logoTaps = 0;
+      openPasswordModal();
+    }
+  });
+}
+
+function openPasswordModal() {
+  $("#passwordInput").value = "";
+  $("#passwordError").hidden = true;
+  $("#passwordModal").classList.add("show");
+  setTimeout(() => $("#passwordInput").focus(), 100);
+}
+
+function closePasswordModal() {
+  $("#passwordModal").classList.remove("show");
+}
+
+$("#passwordCancel").addEventListener("click", closePasswordModal);
+
+$("#passwordSubmit").addEventListener("click", checkPassword);
+$("#passwordInput").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") checkPassword();
+});
+
+function checkPassword() {
+  const val = $("#passwordInput").value.trim();
+  if (val === OWNER_PASSWORD) {
+    closePasswordModal();
+    renderAnswerKey();
+    showScreen("answerKey");
+  } else {
+    $("#passwordError").hidden = false;
+    $("#passwordInput").value = "";
+    $("#passwordInput").focus();
+  }
+}
+
+function buildFullSentence(q) {
+  let ansIdx = 0;
+  return q.template.map(part => {
+    if (part === "_") {
+      return q.answer[ansIdx++];
+    }
+    return part;
+  }).join("");
+}
+
+function renderAnswerKey() {
+  const list = $("#answerKeyList");
+  list.innerHTML = QUESTIONS.map((q, i) => {
+    const sentence = buildFullSentence(q);
+    return '<div class="answer-card"><div class="q-num">Q' + (i + 1) + ' · ' + q.points + ' pt</div><div class="sentence">' + sentence + '</div></div>';
+  }).join("");
+}
 
 /* ===== SETTINGS ===== */
 function setupOptionRow(rowId, key) {
