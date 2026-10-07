@@ -442,7 +442,7 @@ $("#checkBtn").addEventListener("click", () => {
   if (correct) {
     state.score += q.points;
     updateScore();
-    showToast("正解！ +" + q.points, "good");
+    showToast("Correct! +" + q.points, "good");
     const dots = $$("#progressDots span");
     if (dots[state.currentQ]) dots[state.currentQ].classList.add("done");
     state.currentQ++;
@@ -450,7 +450,7 @@ $("#checkBtn").addEventListener("click", () => {
   } else {
     state.lives--;
     updateLives();
-    showToast("不正解…", "bad");
+    showToast("Wrong…", "bad");
     const dots = $$("#progressDots span");
     if (dots[state.currentQ]) {
       dots[state.currentQ].classList.remove("current");
@@ -467,7 +467,7 @@ $("#checkBtn").addEventListener("click", () => {
 $("#skipBtn").addEventListener("click", () => {
   state.lives--;
   updateLives();
-  showToast("スキップ", "bad");
+  showToast("Skipped", "bad");
   const dots = $$("#progressDots span");
   if (dots[state.currentQ]) {
     dots[state.currentQ].classList.add("wrong");
@@ -508,13 +508,13 @@ function endGame(finished) {
   $("#finalTime").textContent = m + ":" + s.toString().padStart(2, "0");
 
   if (isPerfect) {
-    $("#resultTitle").textContent = "パーフェクト！";
+    $("#resultTitle").textContent = "Perfect!";
     $("#hanaMaru").hidden = false;
   } else if (finished) {
-    $("#resultTitle").textContent = "おつかれさま！";
+    $("#resultTitle").textContent = "Good job!";
     $("#hanaMaru").hidden = true;
   } else {
-    $("#resultTitle").textContent = state.timeLeft <= 0 ? "時間切れ…" : "ゲームオーバー";
+    $("#resultTitle").textContent = state.timeLeft <= 0 ? "Time's up…" : "Game Over";
     $("#hanaMaru").hidden = true;
   }
 
@@ -543,13 +543,13 @@ function renderHistory() {
   const list = $("#historyList");
   const history = getHistory();
   if (!history.length) {
-    list.innerHTML = '<p class="history-empty">まだ履歴がありません</p>';
+    list.innerHTML = '<p class="history-empty">No history yet</p>';
     return;
   }
   list.innerHTML = history.map(h => {
     const d = new Date(h.date);
     const dateStr = (d.getMonth()+1) + "/" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes().toString().padStart(2,"0");
-    return '<div class="history-item"><div><div class="date">' + dateStr + '</div><div style="font-size:13px;color:var(--muted)">' + h.correct + '/' + h.total + ' 正解</div></div><div style="text-align:right"><div class="pts">' + h.score + ' pt</div>' + (h.perfect ? '<span class="badge">花丸</span>' : '') + '</div></div>';
+    return '<div class="history-item"><div><div class="date">' + dateStr + '</div><div style="font-size:13px;color:var(--muted)">' + h.correct + '/' + h.total + ' correct</div></div><div style="text-align:right"><div class="pts">' + h.score + ' pt</div>' + (h.perfect ? '<span class="badge">Hana Maru</span>' : '') + '</div></div>';
   }).join("");
 }
 
