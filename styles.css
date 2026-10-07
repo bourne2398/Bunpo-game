@@ -167,6 +167,52 @@ html, body {
   place-items: center;
 }
 
+/* SETTINGS */
+.settings-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 28px;
+  padding: 10px 0;
+}
+.setting-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.setting-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+.option-row {
+  display: flex;
+  gap: 10px;
+}
+.option-btn {
+  flex: 1;
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 14px 10px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.option-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+  box-shadow: 0 4px 14px rgba(43, 138, 158, 0.3);
+}
+.option-btn:active {
+  transform: scale(0.97);
+}
+
 /* HOWTO */
 .howto-content {
   display: flex;
