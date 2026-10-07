@@ -20,7 +20,7 @@
     <!-- HOME -->
     <section id="homeScreen" class="screen active">
       <div class="home-hero">
-        <div class="logo-circle">文</div>
+        <div class="logo-circle" id="secretLogo">文</div>
         <h1>文をつくろう</h1>
         <p class="subtitle">文をつくろう · Bunpo Game</p>
       </div>
@@ -31,7 +31,7 @@
       </div>
     </section>
 
-    <!-- SETTINGS (choose questions + time) -->
+    <!-- SETTINGS -->
     <section id="settingsScreen" class="screen">
       <header class="screen-header">
         <button class="back-btn" data-back="home">←</button>
@@ -95,6 +95,15 @@
       <div id="historyList" class="history-list"></div>
     </section>
 
+    <!-- ANSWER KEY (password protected) -->
+    <section id="answerKeyScreen" class="screen">
+      <header class="screen-header">
+        <button class="back-btn" data-back="home">←</button>
+        <h2>Answer Key</h2>
+      </header>
+      <div id="answerKeyList" class="answer-key-list"></div>
+    </section>
+
     <!-- GAME -->
     <section id="gameScreen" class="screen">
       <header class="game-header">
@@ -133,6 +142,18 @@
         </div>
         <button id="playAgainBtn" class="btn-primary">Play Again</button>
         <button id="homeFromResultBtn" class="btn-secondary">Home</button>
+      </div>
+    </div>
+
+    <!-- PASSWORD MODAL -->
+    <div id="passwordModal" class="modal">
+      <div class="modal-card">
+        <h2>Answer Key</h2>
+        <p style="color:var(--muted);font-size:14px;margin-bottom:16px">Enter password to continue</p>
+        <input type="password" id="passwordInput" class="password-input" placeholder="Password" autocomplete="off">
+        <p id="passwordError" class="password-error" hidden>Wrong password</p>
+        <button id="passwordSubmit" class="btn-primary" style="width:100%;margin-top:14px">Unlock</button>
+        <button id="passwordCancel" class="btn-secondary" style="width:100%;margin-top:10px">Cancel</button>
       </div>
     </div>
 
