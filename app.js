@@ -69,7 +69,7 @@ const QUESTIONS = [
       { text: "と", furi: "" },
       { text: "休み", furi: "やす" }
     ],
-    answer: ["土曜日", "と", "日曜日", "休み"],
+    answer: ["休み", "土曜日", "と", "日曜日"],
     points: 10
   },
   {
