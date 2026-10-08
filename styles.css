@@ -450,6 +450,18 @@ body {
   background: rgba(255, 193, 77, 0.2);
   transform: scale(1.05);
 }
+.slot.wrong-flash {
+  border-color: var(--bad) !important;
+  background: rgba(255, 61, 90, 0.35) !important;
+  animation: shakeRed 0.4s ease;
+}
+@keyframes shakeRed {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+}
 .slot .furigana {
   position: absolute;
   top: -14px;
